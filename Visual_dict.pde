@@ -11,8 +11,8 @@
 // RandomBook.pde example
 // https://github.com/processing/processing/blob/master/java/libraries/pdf/examples/RandomBook/RandomBook.pde
 
-// CountingStrings example
-// https://github.com/processing/processing-docs/blob/master/content/examples/Topics/Advanced%20Data/CountingStrings/CountingStrings.pde
+// CountincellSizetrincellSize example
+// https://github.com/processing/processing-docs/blob/master/content/examples/Topics/Advanced%20Data/CountincellSizetrincellSize/CountincellSizetrincellSize.pde
 
 // Dictionary file source:
 // https://raw.githubusercontent.com/sujithps/Dictionary/master/Oxford%20English%20Dictionary.txt
@@ -35,8 +35,8 @@ import processing.pdf.*;
 PGraphicsPDF pdf;
 
 // delcare and intialize constants
-// grid size
-static int gs = 256;
+// cell size
+static int cellSize = 256;
 
 // declare global variables
 int wordCounter;
@@ -87,7 +87,7 @@ void draw()
                 if (wordCounter < numWords) {
                     pushMatrix();
                     // translate to cell's location on page
-                    translate(k*gs, i*gs);
+                    translate(k*cellSize, i*cellSize);
                     // draw current word
                     drawWord( words.get(wordCounter) );
                     // update index of the dictionary
@@ -127,14 +127,16 @@ void drawWord(String word) {
 
     //draw the shape
     for (int i = 0; i < word.length(); i++) {
-        
+        pushMatrix();
+        translate(cellSize/2,cellSize/2);
+        popMatrix();
     }
     
     // write the word
     textAlign(LEFT, CENTER);
     fill(64);
     textFont(wordFont);
-    text(word, 20, gs - 20);
+    text(word, 20, cellSize - 20);
 }
 
 
@@ -173,10 +175,10 @@ void drawPageGrid() {
     // grid outline
     stroke(200);
     for (int i = 0; i < 12; i++) {
-        line(0, i*gs, 2048, i*gs);
+        line(0, i*cellSize, 2048, i*cellSize);
     }
     for (int i = 0; i < 9; i++) {
-        line(i*gs, 0, i*gs, 2816);
+        line(i*cellSize, 0, i*cellSize, 2816);
     }
 }
 
@@ -186,7 +188,7 @@ void init() {
     pageFont = createFont("Arial", 40);
     titleFont = createFont("Arial", 80);
 
-    // Load the entire dictionary into an array of strings
+    // Load the entire dictionary into an array of strincellSize
     println("starting import... ");
     String[] lines = loadStrings("Oxford_English_Dictionary.txt");
 
