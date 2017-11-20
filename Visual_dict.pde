@@ -123,15 +123,29 @@ void draw()
 
 void drawWord(String word) {
 
-    // The size in this context is: 256 by 256
-
     //draw the shape
     for (int i = 0; i < word.length(); i++) {
         pushMatrix();
-        translate(cellSize/2,cellSize/2);
+        translate(cellSize/2, cellSize/2);
+        rotate(i);
+        fill(0, 20);
+        //noFill();
+        stroke(255);
+        ellipse(word.charAt(i), word.charAt(i)/10, 10, 5);
+        pushMatrix();
+        if (i > 0 ) {
+            scale(0.5);
+            rotate(10);
+            stroke(0, 80);
+            line(word.charAt(i), word.charAt(i)/10, word.charAt(i-1), word.charAt(i-1));
+            ellipse(word.charAt(i-1), word.charAt(i-1)/10, 10, 5);
+        }
+        popMatrix();
+        arc(0, 0, word.charAt(i), word.charAt(i), 0, 2*PI/i, CHORD);
+
         popMatrix();
     }
-    
+
     // write the word
     textAlign(LEFT, CENTER);
     fill(64);
@@ -160,7 +174,7 @@ void drawCover() {
     fill(0);
     textFont(titleFont);
     textAlign(CENTER, CENTER);
-    text("A Visual Dictionary", width/2, height/2);
+    text("Binary Palindromes", width/2, height/2);
     textFont(pageFont);
     text("Luke Demarest", width/2, height/2+ 100);
     text("November 2017", width/2, height/2+ 200);
