@@ -74,15 +74,18 @@ void draw()
 
         // CONTENT PAGE
         pushMatrix();
+        stroke(155);
+        fill(155);
+        rect(0,0,width,height);
         // translate entire matrix to start position
         translate(216, 482);
         // draw series of lines to form a grid outline
-        drawPageGrid();
+        //drawPageGrid();
         // !! perhaps redundant looping
         // iterate across the current page rows by columns
         // 11 rows
         // 8 colums
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < 8; i++) {
             for (int k = 0; k < 8; k++) {
                 if (wordCounter < numWords) {
                     pushMatrix();
@@ -122,35 +125,58 @@ void draw()
 
 
 void drawWord(String word) {
-
     //draw the shape
     for (int i = 0; i < word.length(); i++) {
         pushMatrix();
-        translate(cellSize/2, cellSize/2);
-        rotate(i);
-        fill(0, 20);
-        //noFill();
-        stroke(255);
-        ellipse(word.charAt(i), word.charAt(i)/10, 10, 5);
-        pushMatrix();
-        if (i > 0 ) {
-            scale(0.5);
-            rotate(10);
-            stroke(0, 80);
-            line(word.charAt(i), word.charAt(i)/10, word.charAt(i-1), word.charAt(i-1));
-            ellipse(word.charAt(i-1), word.charAt(i-1)/10, 10, 5);
+        translate(25, cellSize/1.35);
+        String bi = binary(word.charAt(i)).substring(8, 16);
+        int bi0 = 0;
+        int bi1 = bi.charAt(1) == '1' ? 10 : 0;
+        int bi2 = bi.charAt(2) == '1' ? 20 : 10;
+        int bi3 = bi.charAt(3) == '1' ? 20 : 10;
+        int bi4 = bi.charAt(4) == '1' ? -10 : 0;
+        int bi5 = bi.charAt(5) == '1' ? 10 : 0;
+        int bi6 = bi.charAt(6) == '1' ? 20 : 10;
+        int bi7 = bi.charAt(7) == '1' ? 20 : 10;
+        if (i > 0) {
+            int startingX  = 0;
+            int startingY = 0;
+            for (int j = 0; j < i; j++) {
+                int bj1 = binary(word.charAt(j)).substring(8, 16).charAt(1) == '1' ? 10 : 0;
+                int bj5 = binary(word.charAt(j)).substring(8, 16).charAt(4) == '1' ? 10 : 0;
+                int bj4 = binary(word.charAt(j)).substring(8, 16).charAt(5) == '1' ? -10 : 0;
+                startingX += (bj1 + bj5);
+                startingY += bj4;
+            }
+            translate(startingX, startingY);
         }
-        popMatrix();
-        arc(0, 0, word.charAt(i), word.charAt(i), 0, 2*PI/i, CHORD);
+        fill(255);
+        stroke(255);
+        ellipse(0, 0, 5, 5);
+        line(0, 0, bi1, bi0);
+        translate(bi1, bi0);
+        ellipse(0, 0, 5, 5);
+        noFill();
+        ellipse(0, 0, bi2, bi3);
+        fill(255);
+        line(0, 0, 0, bi4);
+        ellipse(0,bi4,5,5);
+        line(0, bi4, bi5, bi4);
+        translate(bi5, bi4);
+        ellipse(0, 0, 5, 5);
+        noFill();
+        ellipse(0, 0, bi6, bi7);
+
+
 
         popMatrix();
     }
 
     // write the word
     textAlign(LEFT, CENTER);
-    fill(64);
+    fill(255);
     textFont(wordFont);
-    text(word, 20, cellSize - 20);
+    text(word, 20, cellSize - 30);
 }
 
 
@@ -160,7 +186,7 @@ void drawWord(String word) {
 
 void drawPageInfo() {
     // write current letter as title
-    fill(0);
+    fill(255);
     textAlign(CENTER, CENTER);
     textFont(titleFont);
     text(words.get(wordCounter-1).charAt(0), width/2, 241);
@@ -174,7 +200,7 @@ void drawCover() {
     fill(0);
     textFont(titleFont);
     textAlign(CENTER, CENTER);
-    text("Binary Palindromes", width/2, height/2);
+    text("Alphabyte", width/2, height/2);
     textFont(pageFont);
     text("Luke Demarest", width/2, height/2+ 100);
     text("November 2017", width/2, height/2+ 200);
